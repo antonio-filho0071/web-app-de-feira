@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 12%;
+
+    --primary: 152 55% 32%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 10% 12%;
+
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+
+    --accent: 152 45% 94%;
+    --accent-foreground: 152 55% 22%;
+
+    --success: 152 55% 32%;
+    --success-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 6% 90%;
+    --input: 240 6% 88%;
+    --ring: 152 55% 32%;
+
+    --radius: 0.85rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: 240 10% 8%;
+      --foreground: 0 0% 96%;
+
+      --card: 240 9% 12%;
+      --card-foreground: 0 0% 96%;
+
+      --popover: 240 9% 12%;
+      --popover-foreground: 0 0% 96%;
+
+      --primary: 152 45% 45%;
+      --primary-foreground: 240 10% 8%;
+
+      --secondary: 240 6% 18%;
+      --secondary-foreground: 0 0% 96%;
+
+      --muted: 240 6% 16%;
+      --muted-foreground: 240 5% 65%;
+
+      --accent: 152 30% 18%;
+      --accent-foreground: 152 45% 80%;
+
+      --success: 152 45% 45%;
+      --success-foreground: 240 10% 8%;
+
+      --destructive: 0 63% 48%;
+      --destructive-foreground: 0 0% 96%;
+
+      --border: 240 6% 22%;
+      --input: 240 6% 24%;
+      --ring: 152 45% 45%;
+    }
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #root {
+    min-height: 100dvh;
+  }
+
+  input,
+  button,
+  textarea {
+    font-family: inherit;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
