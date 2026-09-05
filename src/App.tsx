@@ -1,18 +1,27 @@
-import { ClipboardList, ShoppingCart } from 'lucide-react'
+import { ClipboardList, Loader2, ShoppingCart } from 'lucide-react'
 
+import { ListaMenu } from '@/components/ListaMenu'
+import { SyncBadge } from '@/components/SyncBadge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useShoppingList } from '@/hooks/useShoppingList'
+import { useLista } from '@/hooks/useLista'
+import { useShoppingList, type ListaAtiva } from '@/hooks/useShoppingList'
+import { supabaseConfigurado } from '@/lib/supabaseClient'
 import { ComprarPage } from '@/pages/ComprarPage'
+import { OnboardingLista } from '@/pages/OnboardingLista'
 import { PlanejarPage } from '@/pages/PlanejarPage'
 
-function App() {
-  const list = useShoppingList()
+function AppShell({ lista, onSair }: { lista: ListaAtiva | null; onSair?: () => void }) {
+  const list = useShoppingList(lista)
 
   return (
     <div className="min-h-dvh bg-background">
       <header className="sticky top-0 z-40 border-b border-border bg-background/95 pt-safe-top backdrop-blur supports-[backdrop-filter]:bg-background/80">
-        <div className="container max-w-lg py-3">
+        <div className="container flex max-w-lg items-center justify-between gap-2 py-3">
           <h1 className="text-lg font-bold tracking-tight text-foreground">Lista da Feira</h1>
+          <div className="flex items-center gap-2">
+            <SyncBadge status={list.statusSincronizacao} />
+            {lista && onSair ? <ListaMenu codigo={lista.codigo} onSair={onSair} /> : null}
+          </div>
         </div>
       </header>
 
@@ -38,6 +47,28 @@ function App() {
       </main>
     </div>
   )
+}
+
+function App() {
+  const { status, lista, erro, criar, entrar, sair } = useLista()
+
+  if (!supabaseConfigurado) {
+    return <AppShell key="local" lista={null} />
+  }
+
+  if (status === 'carregando') {
+    return (
+      <div className="flex min-h-dvh items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  if (status === 'sem-lista' || status === 'conectando' || status === 'erro') {
+    return <OnboardingLista status={status} erro={erro} onCriar={criar} onEntrar={entrar} />
+  }
+
+  return <AppShell key={lista?.id ?? 'sem-lista'} lista={lista} onSair={sair} />
 }
 
 export default App
